@@ -1,0 +1,2 @@
+# Only needed for scripts/generate_questions.py (not for --dry-run or verify_questions.py)
+anthropic>=1.15
