@@ -3,6 +3,8 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import MathText from '../components/MathText.vue'
 import QFigure from '../components/QFigure.vue'
+import AiTutor from '../components/AiTutor.vue'
+import { aiReady } from '../ai.js'
 import { dailyQuestion, getQuestion, getTopic, isCorrect, questionsFor } from '../bank.js'
 import { finishDaily, markGaveUp, recordAttempt, state } from '../store.js'
 
@@ -15,7 +17,7 @@ const results = ref([])
 const finished = ref(false)
 const toast = ref('')
 const shake = ref(false)
-const cur = reactive({ answer: '', hints: 0, status: 'answering', attempts: 0 })
+const cur = reactive({ answer: '', hints: 0, status: 'answering', attempts: 0, wrongAnswers: [] })
 
 function build() {
   if (props.mode === 'topic') return questionsFor(props.id, state.grade)
@@ -28,7 +30,7 @@ function build() {
 }
 
 function resetQuestion() {
-  Object.assign(cur, { answer: '', hints: 0, status: 'answering', attempts: 0 })
+  Object.assign(cur, { answer: '', hints: 0, status: 'answering', attempts: 0, wrongAnswers: [] })
 }
 
 function start() {
@@ -72,6 +74,7 @@ function submit() {
     if (props.mode === 'daily') finishDaily()
   } else {
     cur.status = 'wrong'
+    cur.wrongAnswers.push(cur.answer)
     shake.value = true
     setTimeout(() => (shake.value = false), 400)
   }
@@ -226,6 +229,8 @@ const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '/']
       <p><MathText :text="q.solution" /></p>
       <QFigure v-if="q.solutionFigure" :name="q.solutionFigure" label="解析配图" />
     </section>
+
+    <AiTutor v-if="aiReady()" :key="q.id" :q="q" :status="cur.status" :wrong-answers="cur.wrongAnswers" />
 
     <div class="tools" v-if="!locked">
       <button class="btn soft" :disabled="cur.hints >= q.hints.length" @click="showHint">

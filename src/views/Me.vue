@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import AiSettings from '../components/AiSettings.vue'
 import InstallGuide from '../components/InstallGuide.vue'
 import { topics, questions } from '../bank.js'
 import { state, currentStreak, resetAll } from '../store.js'
@@ -46,6 +47,11 @@ function reset() {
     <p class="muted note">“独立做对”= 第一次作答就正确且没有看提示。</p>
   </div>
 
+  <h2 class="section">AI 老师</h2>
+  <div class="card">
+    <AiSettings />
+  </div>
+
   <h2 class="section">添加到手机桌面</h2>
   <div class="card">
     <InstallGuide />
@@ -55,6 +61,7 @@ function reset() {
   <div class="card about">
     <p>本应用是小学数学思维训练的练习工具,题目按专题和年级整理,每题都配有分步提示和完整解析,鼓励孩子先独立思考。</p>
     <p>我们不收集任何个人信息,练习记录只保存在当前设备的浏览器里。清除浏览器数据或更换设备后,记录不会保留。</p>
+    <p>使用 AI 老师时,当前题目、孩子的作答和提问内容会发送给 DeepSeek 生成讲解,不包含任何个人信息。AI 的回答可能出错,建议家长陪同使用。</p>
     <button class="btn danger" @click="reset">清空练习记录</button>
   </div>
 </template>

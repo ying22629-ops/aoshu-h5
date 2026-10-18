@@ -18,6 +18,17 @@ npm run preview    # 本地预览打包结果
 
 **演示用 GitHub Pages**:仓库里已经有 `.github/workflows/deploy.yml`,每次推送到 `main` 都会先校验题库,再打包、发布。第一次使用时,在仓库的 Settings → Pages 里把 Source 选成 **GitHub Actions**。发布后的网址是 `https://<用户名>.github.io/<仓库名>/`。
 
+## AI 老师(DeepSeek)
+
+做题页有“问 AI 老师”按钮:没做出来时只引导思路、不直接给答案;答错时分析错在哪;看过答案后可以完整讲解。支持快捷追问和自由提问,每道题最多问 6 轮,每次回答最多 500 token。网页直接调用 `https://api.deepseek.com`(模型 `deepseek-chat`),不需要服务器。没有配置 key 时,AI 按钮不会显示。
+
+配置 key 有两种方式:
+
+1. **在 App 里填**:“我的” → AI 老师 → 粘贴 key → 测试连接。key 只保存在这台设备的浏览器里。
+2. **打包时写进网页**:本地把 `.env.example` 复制为 `.env.local` 并填写;GitHub Pages 在仓库的 Settings → Secrets and variables → Actions 里添加 `DEEPSEEK_API_KEY`。
+
+⚠️ 用第 2 种方式时,key 会出现在网页代码里,任何能打开网址的人都能看到并盗用。演示时请单独建一个 key、只充少量余额,演示结束就删掉。正式上线必须改成由服务器中转,key 只放在服务器上。
+
 ## 添加到手机桌面(PWA)
 
 页面带有 `manifest.webmanifest` 和 `sw.js`(离线缓存,只在打包后的版本里生效),必须通过 **HTTPS** 访问才能安装:
@@ -95,6 +106,7 @@ python scripts/merge_pending.py --dry-run     # 把所有待审核题视为通�
 
 - `src/bank.js`:读题库、每日一题、判题
 - `src/store.js`:练习记录、错题本、打卡(localStorage)
+- `src/ai.js` / `src/components/AiTutor.vue`:AI 老师(提示词、流式调用、用量上限)
 - `src/views/`:首页 / 刷题 / 错题本 / 我的
 - `scripts/verify_questions.py`:题库校验(可传入其他 json 路径)
 - `scripts/generate_questions.py` / `scripts/merge_pending.py`:AI 出题流水线(见上),公共逻辑在 `scripts/qbank.py`
