@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 130">
+  <path class="l" d="M30 72 V88 M290 72 V88"/>
+  <path class="l a" d="M30 80 H134 M199 80 H290" style="stroke-width:4"/>
+  <path class="l d" d="M134 80 H199"/>
+  <circle class="fa" cx="134" cy="80" r="6"/>
+  <circle class="fa" cx="199" cy="80" r="6"/>
+  <text x="82" y="60">40 米</text>
+  <text x="244" y="60">35 米</text>
+  <text x="166" y="60" class="ta">?</text>
+  <text x="40" y="104">小明家</text>
+  <text x="280" y="104">小红家</text>
+  <text x="160" y="118">一共 100 米</text>
+</svg>

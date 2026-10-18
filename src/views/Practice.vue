@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import MathText from '../components/MathText.vue'
+import QFigure from '../components/QFigure.vue'
 import { dailyQuestion, getQuestion, getTopic, isCorrect, questionsFor } from '../bank.js'
 import { finishDaily, markGaveUp, recordAttempt, state } from '../store.js'
 
@@ -174,6 +175,8 @@ const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '/']
         <span class="muted">{{ q.grade }} 年级 · <span :aria-label="`难度 ${q.difficulty}`">{{ '★'.repeat(q.difficulty) }}</span></span>
       </div>
       <p class="stem"><MathText :text="q.stem" /></p>
+      <QFigure v-if="q.figure" :name="q.figure" />
+
 
       <div v-if="q.type === 'choice'" class="options">
         <button
@@ -221,6 +224,7 @@ const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '/']
       <b>解析</b>
       <p v-if="cur.status === 'revealed'" class="muted ans-line">正确答案:<strong>{{ q.answer }}</strong></p>
       <p><MathText :text="q.solution" /></p>
+      <QFigure v-if="q.solutionFigure" :name="q.solutionFigure" label="解析配图" />
     </section>
 
     <div class="tools" v-if="!locked">

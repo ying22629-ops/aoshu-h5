@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 180">
+  <rect class="l s" x="60" y="25" width="125" height="125"/>
+  <rect class="l w" x="185" y="25" width="75" height="125"/>
+  <path class="l d a" d="M185 25 V150"/>
+  <text x="122" y="88">剪去</text>
+  <text x="222" y="88" class="ta">剩下 ?</text>
+  <text x="160" y="168">8 厘米</text>
+  <text x="32" y="88">5 厘米</text>
+</svg>

@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import 'katex/dist/katex.min.css'
 import './style.css'
+import './install.js'
 import App from './App.vue'
 import Home from './views/Home.vue'
 import Practice from './views/Practice.vue'
@@ -21,3 +22,7 @@ const router = createRouter({
 })
 
 createApp(App).use(router).mount('#app')
+
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}))
+}

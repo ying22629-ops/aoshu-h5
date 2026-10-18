@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import InstallGuide from '../components/InstallGuide.vue'
 import { topics, questions } from '../bank.js'
 import { state, currentStreak, resetAll } from '../store.js'
 
@@ -43,6 +44,11 @@ function reset() {
       <span class="muted num">{{ t.done ? Math.round(t.rate * 100) + '%' : '未练' }}</span>
     </div>
     <p class="muted note">“独立做对”= 第一次作答就正确且没有看提示。</p>
+  </div>
+
+  <h2 class="section">添加到手机桌面</h2>
+  <div class="card">
+    <InstallGuide />
   </div>
 
   <h2 class="section">给家长</h2>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 100">
+  <path class="l" d="M30 50 H290"/>
+  <circle class="fa" cx="30" cy="50" r="5"/>
+  <circle class="fa" cx="82" cy="50" r="5"/>
+  <circle class="fa" cx="134" cy="50" r="5"/>
+  <circle class="fa" cx="186" cy="50" r="5"/>
+  <circle class="fa" cx="238" cy="50" r="5"/>
+  <circle class="fa" cx="290" cy="50" r="5"/>
+  <text x="30" y="76">A</text>
+  <text x="82" y="76">B</text>
+  <text x="134" y="76">C</text>
+  <text x="186" y="76">D</text>
+  <text x="238" y="76">E</text>
+  <text x="290" y="76">F</text>
+</svg>

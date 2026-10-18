@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 165">
+  <rect class="l s" x="100" y="25" width="120" height="120"/>
+  <path class="l d a" d="M100 25 L220 145"/>
+  <text x="88" y="16" style="font-size:20px">✂</text>
+  <text x="270" y="85" class="sm">沿虚线剪</text>
+</svg>

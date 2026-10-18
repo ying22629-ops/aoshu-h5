@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 130">
+  <path class="l" d="M40 90 H280 M40 82 V98 M280 82 V98"/>
+  <text x="40" y="114">甲地</text>
+  <text x="280" y="114">乙地</text>
+  <text x="160" y="110">360 千米</text>
+  <path class="l a" d="M40 60 H104"/>
+  <polygon class="fa" points="114,60 102,54 102,66"/>
+  <text x="76" y="40" class="ta">50 千米/时</text>
+  <path class="l a" d="M280 60 H216"/>
+  <polygon class="fa" points="206,60 218,54 218,66"/>
+  <text x="244" y="40" class="ta">40 千米/时</text>
+</svg>

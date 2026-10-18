@@ -10,6 +10,7 @@ from math import factorial, gcd
 from pathlib import Path
 
 BANK = Path(__file__).resolve().parent.parent / "src" / "data" / "questions.json"
+FIGURES = BANK.parent.parent / "figures"
 ENV = {"Fraction": Fraction, "gcd": gcd, "factorial": factorial, "combinations": combinations, "permutations": permutations}
 REQUIRED = ["id", "topic", "grade", "difficulty", "type", "stem", "answer", "hints", "solution", "verify"]
 
@@ -41,6 +42,11 @@ def main():
             errors.append(f"{qid}: answer not among options")
         if len(q["hints"]) < 2:
             errors.append(f"{qid}: needs at least 2 hints")
+        if not 1 <= q["grade"] <= 6:
+            errors.append(f"{qid}: grade must be 1-6")
+        for field in ("figure", "solutionFigure"):
+            if field in q and not (FIGURES / f"{q[field]}.svg").is_file():
+                errors.append(f"{qid}: {field} file src/figures/{q[field]}.svg not found")
         try:
             got = normalize(eval(q["verify"], dict(ENV)))
         except Exception as e:  # noqa: BLE001

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 190">
+  <rect class="l s" x="80" y="20" width="100" height="100"/>
+  <rect class="l w" x="180" y="20" width="40" height="100"/>
+  <rect class="l w" x="80" y="120" width="100" height="40"/>
+  <rect class="l a" x="180" y="120" width="40" height="40"/>
+  <text x="130" y="70">a × a</text>
+  <text x="200" y="70" class="sm">2a</text>
+  <text x="130" y="140" class="sm">2a</text>
+  <text x="200" y="140" class="sm ta">4</text>
+  <text x="150" y="180">增加部分:2a + 2a + 4 = 24</text>
+</svg>

@@ -2,7 +2,13 @@ import { reactive, watch } from 'vue'
 import { todayStr } from './bank.js'
 
 const KEY = 'aoshu:v1'
-const blank = () => ({ grade: 0, records: {}, wrong: {}, daily: { last: '', streak: 0, done: [] } })
+const blank = () => ({
+  grade: 0,
+  records: {},
+  wrong: {},
+  daily: { last: '', streak: 0, done: [] },
+  installTipClosed: false,
+})
 
 function load() {
   try {

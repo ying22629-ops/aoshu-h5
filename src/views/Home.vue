@@ -1,10 +1,17 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import InstallGuide from '../components/InstallGuide.vue'
 import { topics, questionsFor, dailyQuestion, getTopic, todayStr } from '../bank.js'
+import { isMobile, isStandalone } from '../install.js'
 import { state, currentStreak } from '../store.js'
+
+const showInstall = computed(() => isMobile && !isStandalone.value && !state.installTipClosed)
+const installOpen = ref(false)
 
 const grades = [
   { v: 0, label: '全部' },
+  { v: 1, label: '一年级' },
+  { v: 2, label: '二年级' },
   { v: 3, label: '三年级' },
   { v: 4, label: '四年级' },
   { v: 5, label: '五年级' },
@@ -32,6 +39,16 @@ const topicCards = computed(() =>
     <h1>思维数学</h1>
     <p class="muted">每天一点点,思维更灵活</p>
   </header>
+
+  <div v-if="showInstall" class="card install">
+    <div class="install-top">
+      <button class="install-open" :aria-expanded="installOpen" @click="installOpen = !installOpen">
+        📲 添加到手机桌面,像 App 一样打开 <span class="muted">{{ installOpen ? '收起' : '怎么做?' }}</span>
+      </button>
+      <button class="close" aria-label="关闭提示" @click="state.installTipClosed = true">×</button>
+    </div>
+    <InstallGuide v-if="installOpen" class="install-body" />
+  </div>
 
   <div class="grades" role="group" aria-label="选择年级">
     <button
@@ -79,6 +96,43 @@ const topicCards = computed(() =>
 .head p {
   margin: 0 0 12px;
   font-size: 14px;
+}
+.install {
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  background: var(--warn-soft);
+  border-color: transparent;
+}
+.install-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.install-open {
+  flex: 1;
+  text-align: left;
+  border: none;
+  background: none;
+  padding: 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--warn-text);
+}
+.install-open .muted {
+  font-weight: 400;
+  margin-left: 4px;
+}
+.close {
+  border: none;
+  background: none;
+  font-size: 22px;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  color: var(--muted);
+}
+.install-body {
+  margin-top: 6px;
 }
 .grades {
   display: flex;

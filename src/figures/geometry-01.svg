@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 185">
+  <text x="160" y="14" class="ta">长比宽多 3 厘米</text>
+  <rect class="l s" x="60" y="32" width="200" height="120" rx="2"/>
+  <text x="160" y="92">周长 30 厘米</text>
+  <text x="160" y="170">长</text>
+  <text x="40" y="92">宽</text>
+</svg>

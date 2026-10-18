@@ -107,7 +107,7 @@
     },
 
     {
-      "id": "travel-01", "topic": "travel", "grade": 4, "difficulty": 1, "type": "input",
+      "id": "travel-01", "topic": "travel", "grade": 4, "difficulty": 1, "type": "input", "figure": "travel-01",
       "stem": "甲、乙两地相距 360 千米。两车同时从两地出发相向而行,甲车每小时行 50 千米,乙车每小时行 40 千米,几小时后两车相遇?",
       "answer": "4",
       "hints": ["相向而行,每小时两车一共靠近多少千米?", "速度和 = $50 + 40 = 90$ 千米/时。", "相遇时间 = 路程 ÷ 速度和。"],
@@ -173,7 +173,7 @@
       "verify": "len(list(combinations(range(5), 2)))"
     },
     {
-      "id": "count-03", "topic": "count", "grade": 3, "difficulty": 1, "type": "input",
+      "id": "count-03", "topic": "count", "grade": 3, "difficulty": 1, "type": "input", "figure": "count-03",
       "stem": "一条线段上有 6 个点(包括两个端点),图中一共有多少条线段?",
       "answer": "15",
       "hints": ["任意两个点就能确定一条线段。", "从左边第一个点出发,能连出几条线段?", "$5+4+3+2+1$"],
@@ -189,7 +189,7 @@
       "verify": "sum(str(i).count('1') for i in range(1, 101))"
     },
     {
-      "id": "count-05", "topic": "count", "grade": 4, "difficulty": 2, "type": "input",
+      "id": "count-05", "topic": "count", "grade": 4, "difficulty": 2, "type": "input", "figure": "count-05",
       "stem": "一个 3×3 的方格表(由 9 个小正方形组成)中,一共有多少个正方形?",
       "answer": "14",
       "hints": ["按大小分类来数。", "1×1 的有 9 个,2×2 的有几个?", "2×2 的有 4 个,3×3 的有 1 个。"],
@@ -206,7 +206,7 @@
     },
 
     {
-      "id": "geometry-01", "topic": "geometry", "grade": 4, "difficulty": 1, "type": "input",
+      "id": "geometry-01", "topic": "geometry", "grade": 4, "difficulty": 1, "type": "input", "figure": "geometry-01",
       "stem": "一个长方形周长 30 厘米,长比宽多 3 厘米。它的面积是多少平方厘米?",
       "answer": "54",
       "hints": ["周长 30,那么长 + 宽 = ?", "长 + 宽 = 15,长 − 宽 = 3。", "和差问题:长 $=(15+3)\\div 2$。"],
@@ -214,7 +214,7 @@
       "verify": "((30 / 2 + 3) / 2) * ((30 / 2 - 3) / 2)"
     },
     {
-      "id": "geometry-02", "topic": "geometry", "grade": 5, "difficulty": 2, "type": "input",
+      "id": "geometry-02", "topic": "geometry", "grade": 5, "difficulty": 2, "type": "input", "figure": "geometry-02", "solutionFigure": "geometry-02-sol",
       "stem": "一个正方形的边长增加 2 厘米后,面积增加了 24 平方厘米。原正方形的边长是多少厘米?",
       "answer": "5",
       "hints": ["画图:增加的面积由哪几块组成?", "两个“原边长 × 2”的长方形,加一个 2×2 的小正方形。", "$2a + 2a + 4 = 24$"],
@@ -222,7 +222,7 @@
       "verify": "[a for a in range(1, 100) if (a + 2) ** 2 - a ** 2 == 24][0]"
     },
     {
-      "id": "geometry-03", "topic": "geometry", "grade": 6, "difficulty": 3, "type": "input",
+      "id": "geometry-03", "topic": "geometry", "grade": 6, "difficulty": 3, "type": "input", "figure": "geometry-03",
       "stem": "直角三角形的两条直角边分别是 6 厘米和 8 厘米,斜边长 10 厘米。斜边上的高是多少厘米?",
       "answer": "4.8",
       "hints": ["同一个三角形的面积可以用两种方法算。", "用两条直角边:面积 $=6\\times8\\div2=24$。", "用斜边和斜边上的高:$10 \\times h \\div 2 = 24$。"],
@@ -230,7 +230,7 @@
       "verify": "6 * 8 / 10"
     },
     {
-      "id": "geometry-04", "topic": "geometry", "grade": 4, "difficulty": 1, "type": "input",
+      "id": "geometry-04", "topic": "geometry", "grade": 4, "difficulty": 1, "type": "input", "figure": "geometry-04",
       "stem": "一个三角形三个内角的度数比是 1 : 2 : 3,最大的角是多少度?",
       "answer": "90",
       "hints": ["三角形内角和是多少度?", "180° 被分成了 $1+2+3=6$ 份。", "最大角占 3 份。"],
@@ -238,7 +238,7 @@
       "verify": "180 / (1 + 2 + 3) * 3"
     },
     {
-      "id": "geometry-05", "topic": "geometry", "grade": 5, "difficulty": 2, "type": "input",
+      "id": "geometry-05", "topic": "geometry", "grade": 5, "difficulty": 2, "type": "input", "figure": "geometry-05",
       "stem": "一个正方体所有棱长的总和是 48 厘米,它的体积是多少立方厘米?",
       "answer": "64",
       "hints": ["正方体一共有几条棱?", "12 条棱长度都相等。", "棱长 $=48 \\div 12 = 4$ 厘米。"],
@@ -246,7 +246,7 @@
       "verify": "(48 // 12) ** 3"
     },
     {
-      "id": "geometry-06", "topic": "geometry", "grade": 5, "difficulty": 2, "type": "input",
+      "id": "geometry-06", "topic": "geometry", "grade": 5, "difficulty": 2, "type": "input", "figure": "geometry-06", "solutionFigure": "geometry-06-sol",
       "stem": "把一张长 8 厘米、宽 6 厘米的长方形纸,剪成若干个大小相同的正方形且没有剩余。正方形的边长最大是多少厘米?",
       "answer": "2",
       "hints": ["正方形的边长要同时能整除长和宽。", "也就是 8 和 6 的公因数。", "要最大,就找最大公因数。"],
@@ -361,7 +361,7 @@
       "verify": "900 - (50 + 40) * 5"
     },
     {
-      "id": "geometry-07", "topic": "geometry", "grade": 3, "difficulty": 1, "type": "input",
+      "id": "geometry-07", "topic": "geometry", "grade": 3, "difficulty": 1, "type": "input", "figure": "geometry-07",
       "stem": "用 4 个边长 1 厘米的小正方形,拼成一个大正方形。大正方形的周长是多少厘米?",
       "answer": "8",
       "hints": ["4 个小正方形拼成的大正方形,每条边有几个小正方形?", "每边 2 个,边长是 2 厘米。", "正方形周长 = 边长 × 4。"],
@@ -369,7 +369,7 @@
       "verify": "2 * 4"
     },
     {
-      "id": "geometry-08", "topic": "geometry", "grade": 3, "difficulty": 2, "type": "input",
+      "id": "geometry-08", "topic": "geometry", "grade": 3, "difficulty": 2, "type": "input", "figure": "geometry-08",
       "stem": "一张长方形纸长 8 厘米、宽 5 厘米。从中剪去一个最大的正方形,剩下部分的面积是多少平方厘米?",
       "answer": "15",
       "hints": ["能剪出的最大正方形,边长受哪条边限制?", "最大正方形边长等于宽,是 5 厘米。", "剩下的是一个长 3 厘米、宽 5 厘米的长方形。"],
@@ -385,7 +385,7 @@
       "verify": "3 * 2"
     },
     {
-      "id": "logic-07", "topic": "logic", "grade": 4, "difficulty": 3, "type": "input",
+      "id": "logic-07", "topic": "logic", "grade": 4, "difficulty": 3, "type": "input", "figure": "logic-07",
       "stem": "一只蜗牛从 10 米深的井底往上爬,白天爬 3 米,晚上滑下 2 米。它第几天能爬出井口?",
       "answer": "8",
       "hints": ["每过一整天(白天加晚上),蜗牛实际上升几米?", "每天净上升 1 米。但最后一天白天爬到井口就出去了,不会再滑下来!", "只要白天开始时离井口不超过 3 米,当天就能出去。"],
@@ -399,6 +399,120 @@
       "hints": ["画一画:小明前面有几人?后面有几人?", "前面 4 人,后面 6 人。", "别忘了加上小明自己。"],
       "solution": "$5 + 7 - 1 = 11$(人),小明被数了两次,要减去一次。",
       "verify": "5 + 7 - 1"
+    },
+
+    {
+      "id": "calc-09", "topic": "calc", "grade": 1, "difficulty": 1, "type": "input",
+      "stem": "计算:$9 + 8 + 1$",
+      "answer": "18",
+      "hints": ["哪两个数加起来正好是 10?", "$9 + 1 = 10$,先把它们加起来。", "$10 + 8$ 是多少?"],
+      "solution": "先凑十:$9 + 1 = 10$,再算 $10 + 8 = 18$。",
+      "verify": "9 + 8 + 1"
+    },
+    {
+      "id": "calc-10", "topic": "calc", "grade": 1, "difficulty": 2, "type": "input",
+      "stem": "计算:$1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9$",
+      "answer": "45",
+      "hints": ["试着找能凑成 10 的两个数。", "$1+9$、$2+8$、$3+7$、$4+6$ 都是 10。", "4 个 10,再加上中间剩下的 5。"],
+      "solution": "$(1+9)+(2+8)+(3+7)+(4+6)+5 = 10+10+10+10+5 = 45$",
+      "verify": "sum(range(1, 10))"
+    },
+    {
+      "id": "number-10", "topic": "number", "grade": 2, "difficulty": 1, "type": "input",
+      "stem": "一个两位数,十位上是 4,个位上的数比十位上的数大 3。这个两位数是多少?",
+      "answer": "47",
+      "hints": ["先算个位上是几。", "个位上是 $4 + 3 = 7$。", "十位是 4,个位是 7。"],
+      "solution": "个位 $= 4 + 3 = 7$,所以这个两位数是 47。",
+      "verify": "4 * 10 + (4 + 3)"
+    },
+    {
+      "id": "number-11", "topic": "number", "grade": 2, "difficulty": 2, "type": "input",
+      "stem": "从 1 到 19,一共有多少个单数(奇数)?",
+      "answer": "10",
+      "hints": ["单数就是个位是 1、3、5、7、9 的数。", "1~9 里有 5 个单数。", "11~19 里也有 5 个。"],
+      "solution": "1、3、5、7、9、11、13、15、17、19,一共 10 个。",
+      "verify": "sum(1 for n in range(1, 20) if n % 2 == 1)"
+    },
+    {
+      "id": "travel-09", "topic": "travel", "grade": 2, "difficulty": 1, "type": "input",
+      "stem": "小兔每分钟跑 30 米,它跑了 3 分钟,一共跑了多少米?",
+      "answer": "90",
+      "hints": ["每分钟 30 米,跑了 3 个 1 分钟。", "也就是 3 个 30 相加。", "$30 + 30 + 30$ 或者 $30 \\times 3$。"],
+      "solution": "$30 \\times 3 = 90$(米)。",
+      "verify": "30 * 3"
+    },
+    {
+      "id": "travel-10", "topic": "travel", "grade": 2, "difficulty": 2, "type": "input", "figure": "travel-10",
+      "stem": "如图,小明家和小红家相距 100 米。两人同时从家出发相对而行,小明走了 40 米,小红走了 35 米。这时两人还相距多少米?",
+      "answer": "25",
+      "hints": ["看图:两人一共走了多少米?", "一共走了 $40 + 35 = 75$ 米。", "总路程减去走过的路程,就是还相距的路程。"],
+      "solution": "两人共走了 $40 + 35 = 75$(米),还相距 $100 - 75 = 25$(米)。",
+      "verify": "100 - (40 + 35)"
+    },
+    {
+      "id": "count-08", "topic": "count", "grade": 1, "difficulty": 2, "type": "input", "figure": "count-08",
+      "stem": "数一数,下图中一共有几个三角形?",
+      "answer": "3",
+      "hints": ["先数最小的三角形,有几个?", "左边 1 个、右边 1 个小三角形。", "别忘了外面整个大三角形!"],
+      "solution": "小三角形 2 个,大三角形 1 个,一共 $2 + 1 = 3$ 个。",
+      "verify": "len(list(combinations(range(3), 2)))"
+    },
+    {
+      "id": "count-09", "topic": "count", "grade": 2, "difficulty": 2, "type": "input", "figure": "count-09",
+      "stem": "数一数,下图中一共有几个长方形?",
+      "answer": "6",
+      "hints": ["按大小分类数:先数单独的一格。", "单独一格的有 3 个,两格拼成的有 2 个。", "三格拼成的整个大长方形有 1 个。"],
+      "solution": "$3 + 2 + 1 = 6$(个)。",
+      "verify": "len(list(combinations(range(4), 2)))"
+    },
+    {
+      "id": "geometry-09", "topic": "geometry", "grade": 2, "difficulty": 2, "type": "input", "figure": "geometry-09",
+      "stem": "数一数,下图中一共有几个正方形?",
+      "answer": "5",
+      "hints": ["先数小正方形,有几个?", "小正方形有 4 个。", "4 个小正方形合起来,又是一个大正方形。"],
+      "solution": "小正方形 4 个,大正方形 1 个,一共 $4 + 1 = 5$ 个。",
+      "verify": "sum((2 - k + 1) ** 2 for k in range(1, 3))"
+    },
+    {
+      "id": "geometry-10", "topic": "geometry", "grade": 1, "difficulty": 1, "type": "choice", "figure": "geometry-10",
+      "stem": "把一张正方形纸沿虚线剪开(如图),会得到两个什么图形?",
+      "options": ["三角形", "长方形", "正方形", "圆形"],
+      "answer": "三角形",
+      "hints": ["数一数剪开后每一块有几条边。", "每一块都有 3 条边、3 个角。", "有 3 条边的图形叫什么?"],
+      "solution": "沿对角线剪开,每块都有 3 条边,得到两个一样大的三角形。",
+      "verify": "'三角形'"
+    },
+    {
+      "id": "logic-09", "topic": "logic", "grade": 1, "difficulty": 1, "type": "input",
+      "stem": "小朋友排成一队,小明前面有 3 人,后面有 4 人。这一队一共有几人?",
+      "answer": "8",
+      "hints": ["画一画:用圆圈表示小朋友。", "前面 3 人 + 后面 4 人 = 7 人。", "别忘了还有小明自己!"],
+      "solution": "$3 + 4 + 1 = 8$(人)。",
+      "verify": "3 + 4 + 1"
+    },
+    {
+      "id": "logic-10", "topic": "logic", "grade": 2, "difficulty": 2, "type": "input",
+      "stem": "找规律填数:1, 3, 6, 10, ( )",
+      "answer": "15",
+      "hints": ["算一算相邻两个数相差多少。", "依次相差 2、3、4……", "下一个要加 5。"],
+      "solution": "相邻两数的差依次是 2、3、4、5,所以括号里是 $10 + 5 = 15$。",
+      "verify": "10 + 5"
+    },
+    {
+      "id": "logic-11", "topic": "logic", "grade": 1, "difficulty": 1, "type": "input",
+      "stem": "公交车上原来有 12 人,到站后下去 5 人,又上来 8 人。现在车上有多少人?",
+      "answer": "15",
+      "hints": ["下去人,车上人数变多还是变少?", "先算 $12 - 5 = 7$。", "再加上新上来的 8 人。"],
+      "solution": "$12 - 5 + 8 = 15$(人)。",
+      "verify": "12 - 5 + 8"
+    },
+    {
+      "id": "logic-12", "topic": "logic", "grade": 2, "difficulty": 2, "type": "input",
+      "stem": "哥哥比弟弟多 6 本书。哥哥给弟弟几本后,两人的书就一样多了?",
+      "answer": "3",
+      "hints": ["哥哥给出 1 本,两人的差距会缩小几本?", "哥哥少 1 本、弟弟多 1 本,差距缩小 2 本。", "差距 6 本,要缩小到 0。"],
+      "solution": "哥哥每给 1 本,差距少 2 本,$6 \\div 2 = 3$,哥哥给弟弟 3 本就一样多了。易错答案是 6 本。",
+      "verify": "[x for x in range(7) if 6 - 2 * x == 0][0]"
     }
   ]
 }
