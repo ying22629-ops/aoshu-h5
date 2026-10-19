@@ -8,12 +8,16 @@ import Home from './views/Home.vue'
 import Practice from './views/Practice.vue'
 import WrongBook from './views/WrongBook.vue'
 import Me from './views/Me.vue'
+import MapView from './views/Map.vue'
+import Game24 from './views/Game24.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     { path: '/', component: Home, meta: { tab: 'home' } },
     { path: '/practice/:mode/:id', component: Practice, props: true },
+    { path: '/map/:topic', component: MapView, props: true },
+    { path: '/game/24', component: Game24 },
     { path: '/wrong', component: WrongBook, meta: { tab: 'wrong' } },
     { path: '/me', component: Me, meta: { tab: 'me' } },
     { path: '/:pathMatch(.*)*', redirect: '/' },

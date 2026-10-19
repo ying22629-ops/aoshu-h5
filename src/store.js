@@ -8,12 +8,16 @@ const blank = () => ({
   wrong: {},
   daily: { last: '', streak: 0, done: [] },
   installTipClosed: false,
+  sound: true,
+  g24: { solved: 0, streak: 0, best: 0 },
 })
 
 function load() {
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) || 'null')
-    return saved ? { ...blank(), ...saved, daily: { ...blank().daily, ...saved.daily } } : blank()
+    if (!saved) return blank()
+    const b = blank()
+    return { ...b, ...saved, daily: { ...b.daily, ...saved.daily }, g24: { ...b.g24, ...saved.g24 } }
   } catch {
     return blank()
   }
@@ -53,6 +57,27 @@ export function markGaveUp(qid) {
   const r = (state.records[qid] ||= { attempts: 0, correct: 0, firstTry: null, hintsMax: 0 })
   if (r.firstTry === null) r.firstTry = false
   if (!state.wrong[qid]) state.wrong[qid] = { addedAt: Date.now(), reviews: 0 }
+}
+
+// 3 = right first time without hints, 2 = needed hints or one retry, 1 = got there eventually, 0 = looked at the answer
+export function starsFor({ status, attempts, hints }) {
+  if (status !== 'correct') return 0
+  if (attempts === 1 && hints === 0) return 3
+  if (attempts <= 2) return 2
+  return 1
+}
+
+export function recordStars(qid, stars) {
+  const r = state.records[qid]
+  if (r) r.stars = Math.max(r.stars ?? 0, stars)
+}
+
+export function starsOf(qid) {
+  const r = state.records[qid]
+  if (!r) return null
+  if (r.stars != null) return r.stars
+  if (r.correct > 0) return r.firstTry ? 3 : 1
+  return 0
 }
 
 export function finishDaily() {

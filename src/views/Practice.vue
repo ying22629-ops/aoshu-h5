@@ -1,15 +1,25 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import MathText from '../components/MathText.vue'
 import QFigure from '../components/QFigure.vue'
 import AiTutor from '../components/AiTutor.vue'
 import { aiReady } from '../ai.js'
 import { dailyQuestion, getQuestion, getTopic, isCorrect, questionsFor } from '../bank.js'
-import { finishDaily, markGaveUp, recordAttempt, state } from '../store.js'
+import { finishDaily, markGaveUp, recordAttempt, recordStars, starsFor, state } from '../store.js'
+import { sfx } from '../sfx.js'
+import { confetti } from '../confetti.js'
+import { topicColor } from '../theme.js'
 
 const props = defineProps({ mode: String, id: String })
+const route = useRoute()
 const router = useRouter()
+const combo = ref(0)
+const earned = ref(0)
+const cheer = ref('')
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)]
+const WRONG_CHEERS = ['差一点点,再想想!', '别急,换个思路试试', '加油,你可以的!', '再检查一下哦']
+const RIGHT_CHEERS = { 3: ['太棒了,一次就对!', '厉害!满分三颗星!', '思维小达人!'], 2: ['做对啦!', '真不错!'], 1: ['坚持到底,做对啦!'] }
 
 const list = ref([])
 const idx = ref(0)
@@ -35,12 +45,31 @@ function resetQuestion() {
 
 function start() {
   list.value = build()
-  idx.value = 0
+  const from = props.mode === 'topic' ? list.value.findIndex((x) => x.id === route.query.from) : -1
+  idx.value = Math.max(0, from)
   results.value = []
   finished.value = false
+  combo.value = 0
   resetQuestion()
 }
-watch(() => [props.mode, props.id], start, { immediate: true })
+watch(() => [props.mode, props.id, route.query.from], start, { immediate: true })
+
+function settle() {
+  const stars = starsFor(cur)
+  earned.value = stars
+  recordStars(q.value.id, stars)
+  const r = results.value.find((x) => x.id === q.value.id)
+  if (r) r.stars = stars
+  if (stars === 3) {
+    combo.value += 1
+    confetti()
+  } else combo.value = 0
+  if (cur.status === 'correct') {
+    cheer.value = pick(RIGHT_CHEERS[stars])
+    sfx.correct()
+    for (let i = 0; i < stars; i++) setTimeout(() => sfx.star(i), 380 + i * 160)
+  }
+}
 
 const q = computed(() => list.value[idx.value])
 const title = computed(() => {
@@ -51,6 +80,8 @@ const title = computed(() => {
 const locked = computed(() => cur.status === 'correct' || cur.status === 'revealed')
 const canReveal = computed(() => cur.attempts > 0 || cur.hints >= (q.value?.hints.length ?? 0))
 const firstTryRight = computed(() => results.value.filter((r) => r.ok).length)
+const sessionStars = computed(() => results.value.reduce((s, r) => s + (r.stars ?? 0), 0))
+const isLevel = computed(() => props.mode === 'topic')
 const missed = computed(() => results.value.filter((r) => !r.ok))
 
 function flash(msg) {
@@ -67,14 +98,18 @@ function submit() {
     hintsUsed: cur.hints,
     review: props.mode === 'review' && first,
   })
-  if (first) results.value.push({ id: q.value.id, ok })
+  if (first) results.value.push({ id: q.value.id, ok, stars: 0 })
   if (ok) {
     cur.status = 'correct'
+    settle()
     if (mastered) flash('已掌握,移出错题本 🎉')
     if (props.mode === 'daily') finishDaily()
   } else {
     cur.status = 'wrong'
     cur.wrongAnswers.push(cur.answer)
+    cheer.value = pick(WRONG_CHEERS)
+    combo.value = 0
+    sfx.wrong()
     shake.value = true
     setTimeout(() => (shake.value = false), 400)
   }
@@ -100,8 +135,9 @@ function showHint() {
 function reveal() {
   if (cur.status === 'correct') return
   cur.status = 'revealed'
-  if (cur.attempts === 0) results.value.push({ id: q.value.id, ok: false })
+  if (cur.attempts === 0) results.value.push({ id: q.value.id, ok: false, stars: 0 })
   markGaveUp(q.value.id)
+  settle()
   if (props.mode === 'daily') finishDaily()
 }
 
@@ -141,7 +177,9 @@ const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '/']
   <header class="bar-top">
     <button class="icon-btn" aria-label="返回" @click="back">‹</button>
     <span class="ttl">{{ title }}</span>
-    <span class="count muted" v-if="list.length && !finished">{{ idx + 1 }} / {{ list.length }}</span>
+    <span class="count muted" v-if="list.length && !finished">
+      {{ isLevel ? `第 ${idx + 1} 关` : `${idx + 1} / ${list.length}` }}
+    </span>
   </header>
   <div v-if="list.length > 1 && !finished" class="progress" aria-hidden="true">
     <i :style="{ width: (idx / list.length) * 100 + '%' }"></i>
@@ -154,25 +192,29 @@ const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '/']
   </div>
 
   <section v-else-if="finished" class="card summary">
-    <div class="score">{{ firstTryRight }}<small> / {{ results.length }}</small></div>
-    <p class="muted">首次作答正确</p>
+    <div class="trophy" aria-hidden="true">{{ firstTryRight === results.length ? '🏆' : '🎖️' }}</div>
+    <div class="score">⭐ {{ sessionStars }}<small> / {{ results.length * 3 }}</small></div>
+    <p class="muted">本轮获得的星星 · 首次答对 {{ firstTryRight }} / {{ results.length }} 题</p>
     <p v-if="firstTryRight === results.length" class="praise">全部做对,厉害!</p>
     <p v-else class="praise">做错的题已经放进错题本,记得回来复习哦。</p>
     <ul class="res-list">
       <li v-for="r in results" :key="r.id">
-        <span :class="r.ok ? 'ok' : 'bad'">{{ r.ok ? '✓' : '✗' }}</span>
+        <span class="res-stars" :aria-label="`${r.stars} 颗星`">
+          <i v-for="s in 3" :key="s" :class="{ on: s <= r.stars }">★</i>
+        </span>
         <MathText :text="getQuestion(r.id).stem" class="res-stem" />
       </li>
     </ul>
     <div class="actions">
-      <button v-if="mode !== 'daily'" class="btn soft" @click="start">再练一遍</button>
+      <RouterLink v-if="isLevel" :to="`/map/${id}`" class="btn soft">返回地图</RouterLink>
+      <button v-else-if="mode !== 'daily'" class="btn soft" @click="start">再练一遍</button>
       <RouterLink v-if="missed.length && mode !== 'review'" to="/wrong" class="btn soft">去错题本</RouterLink>
       <RouterLink to="/" class="btn primary">返回首页</RouterLink>
     </div>
   </section>
 
   <template v-else>
-    <section class="card qcard" :class="{ shake }">
+    <section class="card qcard" :class="{ shake }" :style="{ borderTopColor: topicColor(q.topic) }">
       <div class="meta">
         <span class="tag">{{ getTopic(q.topic).name }}</span>
         <span class="muted">{{ q.grade }} 年级 · <span :aria-label="`难度 ${q.difficulty}`">{{ '★'.repeat(q.difficulty) }}</span></span>
@@ -210,10 +252,14 @@ const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '/']
         <span v-if="!locked" class="caret" aria-hidden="true"></span>
       </div>
 
-      <p v-if="cur.status === 'wrong'" class="feedback bad" role="status">不对哦,再想想?可以看看提示。</p>
-      <p v-if="cur.status === 'correct'" class="feedback ok" role="status">
-        回答正确!{{ cur.attempts > 1 ? '改正得好!' : cur.hints ? '' : '一次就对,真棒!' }}
-      </p>
+      <p v-if="cur.status === 'wrong'" class="feedback bad" role="status">🤔 {{ cheer }}可以看看提示。</p>
+      <div v-if="cur.status === 'correct'" class="win" role="status">
+        <span class="win-stars" :aria-label="`获得 ${earned} 颗星`">
+          <i v-for="s in 3" :key="s" :class="{ on: s <= earned }" :style="{ animationDelay: 0.35 + s * 0.16 + 's' }">★</i>
+        </span>
+        <span class="feedback ok">{{ cheer }}</span>
+        <span v-if="combo >= 2" class="combo">🔥 连对 ×{{ combo }}</span>
+      </div>
     </section>
 
     <section v-if="cur.hints > 0" class="hints">
@@ -248,7 +294,7 @@ const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '/']
 
     <div v-if="locked" class="next">
       <button class="btn primary wide" @click="next">
-        {{ idx + 1 >= list.length ? '完成' : '下一题' }}
+        {{ idx + 1 >= list.length ? '完成' : isLevel ? '下一关 →' : '下一题' }}
       </button>
     </div>
   </template>
@@ -368,6 +414,68 @@ const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '/']
 .feedback {
   margin: 10px 0 0;
   font-weight: 600;
+}
+.qcard {
+  border-top: 5px solid var(--primary);
+}
+.win {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin-top: 10px;
+}
+.win .feedback {
+  margin: 0;
+}
+.win-stars i,
+.res-stars i {
+  font-style: normal;
+  color: var(--line);
+}
+.win-stars i {
+  display: inline-block;
+  font-size: 30px;
+  line-height: 1;
+  animation: pop 0.45s backwards;
+}
+.win-stars i.on,
+.res-stars i.on {
+  color: #f59e0b;
+}
+@keyframes pop {
+  0% {
+    transform: scale(0) rotate(-40deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.35) rotate(8deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.combo {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(90deg, #f97316, #ef4444);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+.trophy {
+  font-size: 56px;
+  line-height: 1.1;
+}
+.res-stars {
+  flex: none;
+  font-size: 14px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .win-stars i {
+    animation: none;
+  }
 }
 .ok {
   color: var(--ok);

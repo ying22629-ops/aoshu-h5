@@ -47,6 +47,14 @@ function reset() {
     <p class="muted note">“独立做对”= 第一次作答就正确且没有看提示。</p>
   </div>
 
+  <h2 class="section">设置</h2>
+  <div class="card">
+    <label class="toggle">
+      <span>🔊 音效</span>
+      <input v-model="state.sound" type="checkbox" role="switch" />
+    </label>
+  </div>
+
   <h2 class="section">AI 老师</h2>
   <div class="card">
     <AiSettings />
@@ -120,6 +128,18 @@ function reset() {
 .note {
   font-size: 12px;
   margin: 8px 0 0;
+}
+.toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  min-height: 32px;
+}
+.toggle input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--primary);
 }
 .about p {
   margin: 0 0 10px;
