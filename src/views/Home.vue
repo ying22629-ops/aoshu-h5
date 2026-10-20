@@ -5,6 +5,8 @@ import { topics, questionsFor, dailyQuestion, getTopic, todayStr } from '../bank
 import { isMobile, isStandalone } from '../install.js'
 import { state, currentStreak, starsOf } from '../store.js'
 import { topicColor } from '../theme.js'
+import Owl from '../components/Owl.vue'
+import { balance, food } from '../rewards.js'
 
 const showInstall = computed(() => isMobile && !isStandalone.value && !state.installTipClosed)
 const installOpen = ref(false)
@@ -34,7 +36,6 @@ const topicCards = computed(() =>
     })
     .filter((t) => t.total > 0),
 )
-const totalStars = computed(() => Object.keys(state.records).reduce((s, id) => s + (starsOf(id) ?? 0), 0))
 const greeting = (() => {
   const h = new Date().getHours()
   if (h < 11) return '早上好!'
@@ -51,10 +52,11 @@ const greeting = (() => {
       <h1>思维数学</h1>
       <p class="tag-line">闯关做题,动动小脑筋 🧠</p>
     </div>
-    <div class="hero-side">
-      <span class="owl" aria-hidden="true">🦉</span>
-      <span class="star-total" :aria-label="`共获得 ${totalStars} 颗星`">⭐ {{ totalStars }}</span>
-    </div>
+    <RouterLink to="/pet" class="hero-side" aria-label="去看看我的小智">
+      <span class="owl" aria-hidden="true"><Owl :size="52" still /></span>
+      <span class="star-total">⭐ {{ balance }}</span>
+      <span v-if="food < 30" class="hungry" aria-hidden="true">饿了</span>
+    </RouterLink>
   </header>
 
   <div v-if="showInstall" class="card install">
@@ -117,14 +119,26 @@ const greeting = (() => {
   </div>
 
   <h2 class="section">思维游戏</h2>
-  <RouterLink to="/game/24" class="card game">
-    <span class="game-cards" aria-hidden="true"><i>3</i><i>8</i><i>3</i><i>8</i></span>
-    <span class="game-main">
+  <div class="games">
+    <RouterLink to="/game/24" class="card game g24">
+      <span class="game-ico" aria-hidden="true">🃏</span>
       <span class="game-title">24 点</span>
-      <span class="muted game-desc">四个数加减乘除凑出 24</span>
-    </span>
-    <span class="game-stat" v-if="state.g24.solved">✅ {{ state.g24.solved }}</span>
-  </RouterLink>
+      <span class="game-desc">加减乘除凑 24</span>
+      <span class="game-stat">✅ {{ state.g24.solved }}</span>
+    </RouterLink>
+    <RouterLink to="/game/sudoku" class="card game gsd">
+      <span class="game-ico" aria-hidden="true">🔢</span>
+      <span class="game-title">数独</span>
+      <span class="game-desc">练逻辑推理</span>
+      <span class="game-stat">✅ {{ state.sudoku.wins }}</span>
+    </RouterLink>
+    <RouterLink to="/game/slide" class="card game gsl">
+      <span class="game-ico" aria-hidden="true">🧩</span>
+      <span class="game-title">华容道</span>
+      <span class="game-desc">滑块排顺序</span>
+      <span class="game-stat">✅ {{ state.slide.wins3 + state.slide.wins4 }}</span>
+    </RouterLink>
+  </div>
 </template>
 
 <style scoped>
@@ -340,51 +354,67 @@ const greeting = (() => {
   font-weight: 700;
   color: var(--warn-text);
 }
+.hero-side {
+  position: relative;
+  color: inherit;
+}
+.hungry {
+  position: absolute;
+  top: -4px;
+  right: -10px;
+  font-size: 11px;
+  font-weight: 800;
+  background: #fff;
+  color: var(--bad);
+  border-radius: 999px;
+  padding: 0 6px;
+}
+.games {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
 .game {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
-  background: linear-gradient(135deg, #16a34a, #0d9488);
+  text-align: center;
+  gap: 2px;
+  padding: 12px 6px;
   border-color: transparent;
   color: #fff;
 }
-.game-cards {
-  display: grid;
-  grid-template-columns: repeat(2, 22px);
-  gap: 4px;
+.game:active {
+  transform: scale(0.97);
 }
-.game-cards i {
-  font-style: normal;
-  height: 26px;
-  border-radius: 6px;
-  background: #fffdf7;
-  color: #1f2333;
-  font-weight: 800;
-  font-size: 14px;
-  display: grid;
-  place-items: center;
+.g24 {
+  background: linear-gradient(150deg, #16a34a, #0d9488);
 }
-.game-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.gsd {
+  background: linear-gradient(150deg, #6366f1, #3b82f6);
+}
+.gsl {
+  background: linear-gradient(150deg, #f97316, #e11d48);
+}
+.game-ico {
+  font-size: 32px;
+  line-height: 1.1;
 }
 .game-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
-}
-.game .muted {
-  color: rgba(255, 255, 255, 0.85);
 }
 .game-desc {
-  font-size: 13px;
+  font-size: 11px;
+  opacity: 0.9;
 }
 .game-stat {
+  margin-top: 4px;
   font-weight: 800;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.22);
   border-radius: 999px;
-  padding: 2px 10px;
-  font-size: 13px;
+  padding: 0 8px;
+  font-size: 12px;
 }
 @media (prefers-reduced-motion: reduce) {
   .owl {

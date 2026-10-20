@@ -10,6 +10,9 @@ import WrongBook from './views/WrongBook.vue'
 import Me from './views/Me.vue'
 import MapView from './views/Map.vue'
 import Game24 from './views/Game24.vue'
+import Sudoku from './views/Sudoku.vue'
+import Slide from './views/Slide.vue'
+import Pet from './views/Pet.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -18,6 +21,9 @@ const router = createRouter({
     { path: '/practice/:mode/:id', component: Practice, props: true },
     { path: '/map/:topic', component: MapView, props: true },
     { path: '/game/24', component: Game24 },
+    { path: '/game/sudoku', component: Sudoku },
+    { path: '/game/slide', component: Slide },
+    { path: '/pet', component: Pet },
     { path: '/wrong', component: WrongBook, meta: { tab: 'wrong' } },
     { path: '/me', component: Me, meta: { tab: 'me' } },
     { path: '/:pathMatch(.*)*', redirect: '/' },

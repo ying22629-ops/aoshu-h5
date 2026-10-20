@@ -10,14 +10,21 @@ const blank = () => ({
   installTipClosed: false,
   sound: true,
   g24: { solved: 0, streak: 0, best: 0 },
+  sudoku: { wins: 0, hard: false },
+  slide: { wins3: 0, wins4: 0, best3: null, best4: null, size: 3 },
+  pet: { owned: [], equip: null, food: 60, fedAt: Date.now(), spent: 0 },
 })
+
+const NESTED = ['daily', 'g24', 'sudoku', 'slide', 'pet']
 
 function load() {
   try {
     const saved = JSON.parse(localStorage.getItem(KEY) || 'null')
     if (!saved) return blank()
     const b = blank()
-    return { ...b, ...saved, daily: { ...b.daily, ...saved.daily }, g24: { ...b.g24, ...saved.g24 } }
+    const merged = { ...b, ...saved }
+    for (const k of NESTED) merged[k] = { ...b[k], ...saved[k] }
+    return merged
   } catch {
     return blank()
   }
